@@ -20,6 +20,7 @@ function IScroll (el, options) {
 		bounceTime: 600,
 		bounceEasing: '',
 
+    isScrollable: function(){return 1;},
 		preventDefault: true,
 		preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT)$/ },
 
@@ -113,6 +114,7 @@ IScroll.prototype = {
 	},
 
 	_start: function (e) {
+	  var isScrollable;
 		// React to left mouse button only
 		if ( utils.eventType[e.type] != 1 ) {
 		  // for button property
@@ -135,6 +137,18 @@ IScroll.prototype = {
 			return;
 		}
 
+		isScrollable = this.options.isScrollable(e);
+    if (!isScrollable) {
+      return;
+    } else if (isScrollable === 2) {
+      if (this.directionY < 0 && this.y < -2 ) {
+        e.stopPropagation();
+      }
+      if (this.directionY > 0 && this.y >= (this.maxScrollY + 2)) {
+        e.stopPropagation();
+      }   
+    }
+  
 		if ( this.options.preventDefault && !utils.isBadAndroid && !utils.preventDefaultException(e.target, this.options.preventDefaultException) ) {
 			e.preventDefault();
 		}

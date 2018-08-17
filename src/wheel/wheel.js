@@ -18,6 +18,17 @@
 			return;
 		}
 
+    var isScrollable = this.options.isScrollable(e);
+    if (!isScrollable) {
+      return;
+    } else if (isScrollable === 2) {
+      if (e.deltaY < 0 && this.y < -2 ) {
+        e.stopPropagation();
+      }
+      if (e.deltaY > 0 && this.y >= (this.maxScrollY + 2)) {
+        e.stopPropagation();
+      }
+    }
 		e.preventDefault();
 
 		var wheelDeltaX, wheelDeltaY,
